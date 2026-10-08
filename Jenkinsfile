@@ -42,7 +42,7 @@ pipeline {
                     python3 -c "
 import json, os
 
-target_size = 48 * 1024 * 1024  # 48MB raw file - just under the alleged 50MB cap, small enough to upload within the default 10s OkHttp timeout
+target_size = 50 * 1024 * 1024  # 50MB raw file
 report = {
     'version': '2.1.0',
     'runs': [{
