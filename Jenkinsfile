@@ -62,7 +62,7 @@ print('wrote', os.path.getsize('test/bigscan.sarif'), 'bytes')
 
         stage('Register large security scan') {
             steps {
-                registerSecurityScan(artifacts: 'test/bigscan.sarif', format: 'SARIF')
+                registerSecurityScan(artifacts: 'test/bigscan.sarif')
             }
         }
 
