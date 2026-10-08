@@ -1,0 +1,93 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "trivy",
+          "version": "0.50.0",
+          "informationUri": "https://github.com/aquasecurity/trivy",
+          "rules": [
+            {
+              "id": "CVE-2023-44487",
+              "name": "HTTP2RapidReset",
+              "shortDescription": {
+                "text": "HTTP/2 Rapid Reset Attack"
+              },
+              "fullDescription": {
+                "text": "The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "precision": "very-high",
+                "severity": "HIGH"
+              }
+            },
+            {
+              "id": "CVE-2024-0567",
+              "name": "GnuTLSCertVerification",
+              "shortDescription": {
+                "text": "GnuTLS certificate verification bypass"
+              },
+              "fullDescription": {
+                "text": "A vulnerability was found in GnuTLS where a cockpit web service may accept a certificate that is not yet valid or has been revoked."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "precision": "high",
+                "severity": "MEDIUM"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CVE-2023-44487",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "Package: golang.org/x/net\nInstalled Version: 0.15.0\nFixed Version: 0.17.0\nVulnerability: HTTP/2 Rapid Reset Attack"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "go.sum"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2024-0567",
+          "ruleIndex": 1,
+          "level": "warning",
+          "message": {
+            "text": "Package: gnutls\nInstalled Version: 3.7.8\nFixed Version: 3.7.10\nVulnerability: GnuTLS certificate verification bypass"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Dockerfile"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
