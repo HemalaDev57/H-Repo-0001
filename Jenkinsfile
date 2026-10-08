@@ -41,6 +41,30 @@ pipeline {
             }
         }
 
+        stage('Generate 5MB SARIF scan report') {
+            steps {
+                sh 'python3 scripts/generate_large_sarif.py test/5mb-scan.sarif 5242880'
+            }
+        }
+
+        stage('Register 5MB security scan') {
+            steps {
+                registerSecurityScan(artifacts: 'test/5mb-scan.sarif')
+            }
+        }
+
+        stage('Generate 10MB SARIF scan report') {
+            steps {
+                sh 'python3 scripts/generate_large_sarif.py test/10mb-scan.sarif 10485760'
+            }
+        }
+
+        stage('Register 10MB security scan') {
+            steps {
+                registerSecurityScan(artifacts: 'test/10mb-scan.sarif')
+            }
+        }
+
         stage('Generate large SARIF scan report') {
             steps {
                 sh 'python3 scripts/generate_large_sarif.py test/large-scan.sarif'
