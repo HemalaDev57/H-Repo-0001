@@ -35,34 +35,15 @@ pipeline {
             }
         }
 
-        stage('Generate large SARIF report') {
+        stage('Generate large SARIF scan report') {
             steps {
-                sh '''
-                    mkdir -p test
-                    python3 -c "
-import json, os
-
-target_size = 50 * 1024 * 1024  # 50MB raw file
-report = {
-    'version': '2.1.0',
-    'runs': [{
-        'tool': {'driver': {'name': 'test-scanner'}},
-        'results': [{'ruleId': 'test-rule', 'message': {'text': ''}}]
-    }]
-}
-base_len = len(json.dumps(report))
-report['runs'][0]['results'][0]['message']['text'] = 'a' * (target_size - base_len)
-with open('test/bigscan.sarif', 'w') as f:
-    json.dump(report, f)
-print('wrote', os.path.getsize('test/bigscan.sarif'), 'bytes')
-"
-                '''
+                sh 'python3 scripts/generate_large_sarif.py test/large-scan.sarif'
             }
         }
 
         stage('Register large security scan') {
             steps {
-                registerSecurityScan(artifacts: 'test/bigscan.sarif')
+                registerSecurityScan(artifacts: 'test/large-scan.sarif')
             }
         }
 
