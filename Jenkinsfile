@@ -37,6 +37,37 @@ pipeline {
             }
         }
 
+        stage('Generate large SARIF report') {
+            steps {
+                sh '''
+                    mkdir -p test
+                    python3 -c "
+import json, os
+
+target_size = 60 * 1024 * 1024  # 60MB raw file - above the alleged 50MB cap, below the 100MB request cap
+report = {
+    'version': '2.1.0',
+    'runs': [{
+        'tool': {'driver': {'name': 'test-scanner'}},
+        'results': [{'ruleId': 'test-rule', 'message': {'text': ''}}]
+    }]
+}
+base_len = len(json.dumps(report))
+report['runs'][0]['results'][0]['message']['text'] = 'a' * (target_size - base_len)
+with open('test/bigscan.sarif', 'w') as f:
+    json.dump(report, f)
+print('wrote', os.path.getsize('test/bigscan.sarif'), 'bytes')
+"
+                '''
+            }
+        }
+
+        stage('Register large security scan') {
+            steps {
+                registerSecurityScan(artifacts: 'test/bigscan.sarif', format: 'SARIF')
+            }
+        }
+
         stage('Test') {
             steps {
                 echo 'Running Unit Tests...'
