@@ -35,6 +35,12 @@ pipeline {
             }
         }
 
+        stage('Register sample security scan') {
+            steps {
+                registerSecurityScan(artifacts: 'testdata/trivy.sarif')
+            }
+        }
+
         stage('Generate large SARIF scan report') {
             steps {
                 sh 'python3 scripts/generate_large_sarif.py test/large-scan.sarif'
