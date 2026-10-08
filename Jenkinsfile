@@ -23,16 +23,14 @@ pipeline {
             steps {
                 echo 'Registering the metadata'
                 script {
-                    for (int i = 1; i <= 1005; i++) {
                         registerBuildArtifactMetadata(
-                            name: "bee-74787-artifact-${i}",
+                            name: "my-test-artifact",
                             version: "1.0.0",
                             type: "docker",
                             url: "http://localhost:1111",
                             digest: "6f637064707039346163663237383938",
                             label: "prod"
                         )
-                    }
                 }
             }
         }
